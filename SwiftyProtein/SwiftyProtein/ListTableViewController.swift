@@ -44,6 +44,8 @@ class ListTableViewController: UITableViewController, UISearchBarDelegate {
         return 1
     }
 	*/
+	
+	//https://pdbj.org/rest/newweb/fetch/file?cat=cc&format=mdl&id=ABA
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return sortedLigands.count
@@ -66,6 +68,11 @@ class ListTableViewController: UITableViewController, UISearchBarDelegate {
 		return nil
 	}
 
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		let proteinVC = ProteinViewController(ligandCode: (tableView.cellForRow(at: indexPath)?.textLabel?.text)!)
+		self.navigationController?.pushViewController(proteinVC, animated: true)
+	}
+	
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -129,15 +136,6 @@ class ListTableViewController: UITableViewController, UISearchBarDelegate {
 		sortedLigands = ligands.filter({ str in
 			str.hasPrefix(text.uppercased())
 		})
-		sortedLigands.sort()
-		
-//		sortedLigands = sortedLigands.sorted{ first, _ in
-//			return first.name!.hasPrefix(text.uppercased())
-//		}
-		
-//		sortedLigands.removeAll { ligand in
-//			return !ligand.name!.hasPrefix(text.uppercased())
-//		}
 		
 		if sortedLigands.isEmpty {
 			let alertVC = UIAlertController(title: "", message: "Ligand not found", preferredStyle: .alert)
@@ -146,6 +144,8 @@ class ListTableViewController: UITableViewController, UISearchBarDelegate {
 			self.present(alertVC, animated: true, completion: nil)
 			searchBar.text = ""
 			sortedLigands = ligands
+		} else {
+			sortedLigands.sort()
 		}
 		
 		tableView.reloadData()

@@ -10,8 +10,11 @@ import LocalAuthentication
 
 class LoginViewController: UIViewController {
 
-    override func viewDidLoad() {
+	@IBOutlet weak var useBiometricsButton: UIButton!
+	
+	override func viewDidLoad() {
         super.viewDidLoad()
+		useBiometrics(useBiometricsButton)
 
         // Do any additional setup after loading the view.
     }
