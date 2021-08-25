@@ -9,7 +9,7 @@ import Foundation
 
 let Host = "https://data.pdbj.org/pdbjplus/data/cc/mmjson/"
 
-func getDataFor(ligandCode code: String, complition: @escaping (LigandData) -> ()) {
+func getDataFor(ligandCode code: String, complition: @escaping (LigandData?) -> ()) {
 	
 	guard let url = URL(string: "\(Host)\(code).json") else { return }
 	let request = URLRequest(url: url)
@@ -34,47 +34,17 @@ func getDataFor(ligandCode code: String, complition: @escaping (LigandData) -> (
 //		print(string)
 		
 		let newData = string.data(using: .utf8)!
-		print("STRING")
-		print(string)
-		print("END STRING")
-		
 		
 		do {
-			
-			
+	
 			let decoder = JSONDecoder()
 			let ligandData = try decoder.decode(LigandData.self, from: newData)
-//			print(ligandData)
+			print(ligandData)
 			complition(ligandData)
 		} catch {
 			let error = error
 			print("ERROR JSON: \(error.localizedDescription)")
+			complition(nil)
 		}
 	}.resume()
 }
-
-
-//func handleJSON(whith name: String) {
-//	let url = Bundle.main.url(forResource: "ABA", withExtension: "json")
-//	do {
-//
-//		var string = try String(contentsOf: url!)
-//
-//		string = string.replacingOccurrences(of: "\"data_\(name)\":", with: "\n")
-//		string.removeFirst(2)
-//		string.removeLast(2)
-//		print(string)
-//
-//		let newData = string.data(using: .utf8)!
-//		print("NEW DATA: \(newData)")
-//
-//		let decoder = JSONDecoder()
-//		let test = try decoder.decode(LigandData.self, from: newData)
-//		print(test)
-//
-//	} catch {
-//		let error = error
-//		print("ERROR: \(error.localizedDescription)")
-//	}
-//
-//}

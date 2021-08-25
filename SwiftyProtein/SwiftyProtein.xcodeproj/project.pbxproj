@@ -7,7 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		87687C4926D5357C00FB82CC /* 0DS.json in Resources */ = {isa = PBXBuildFile; fileRef = 87687C4826D5357C00FB82CC /* 0DS.json */; };
+		8768BC4326D66BFA00ECA8F9 /* LigandDataStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8768BC4226D66BFA00ECA8F9 /* LigandDataStructures.swift */; };
+		8768BC4726D689D000ECA8F9 /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8768BC4626D689D000ECA8F9 /* Geometry.swift */; };
+		87771B2726D5AC2F003C4DD4 /* atoms.json in Resources */ = {isa = PBXBuildFile; fileRef = 87771B2626D5AC2F003C4DD4 /* atoms.json */; };
+		87771B2926D5D126003C4DD4 /* AtomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87771B2826D5D126003C4DD4 /* AtomView.xib */; };
+		87771B2B26D5D607003C4DD4 /* AtomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87771B2A26D5D607003C4DD4 /* AtomView.swift */; };
 		87A4788726CEF6B1009E7AD2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A4788626CEF6B1009E7AD2 /* AppDelegate.swift */; };
 		87A4788926CEF6B1009E7AD2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A4788826CEF6B1009E7AD2 /* SceneDelegate.swift */; };
 		87A4788E26CEF6B1009E7AD2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 87A4788C26CEF6B1009E7AD2 /* Main.storyboard */; };
@@ -21,14 +25,17 @@
 		87A478A726CF1BA4009E7AD2 /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A478A626CF1BA4009E7AD2 /* ListCell.swift */; };
 		87AC6DC926D38E65006EA237 /* 04G.json in Resources */ = {isa = PBXBuildFile; fileRef = 87AC6DC826D38E65006EA237 /* 04G.json */; };
 		87AC6DCB26D3B45A006EA237 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87AC6DCA26D3B45A006EA237 /* Network.swift */; };
-		87CF9C4926CFD3A700157A6D /* ABA.mdl in Resources */ = {isa = PBXBuildFile; fileRef = 87CF9C4826CFD3A700157A6D /* ABA.mdl */; };
 		87CF9C4B26CFD3F100157A6D /* ProteinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87CF9C4A26CFD3F100157A6D /* ProteinViewController.swift */; };
 		87CF9C4F26CFEA8B00157A6D /* ABA.json in Resources */ = {isa = PBXBuildFile; fileRef = 87CF9C4E26CFEA8B00157A6D /* ABA.json */; };
-		87CF9C5126CFF6AC00157A6D /* Atom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87CF9C5026CFF6AC00157A6D /* Atom.swift */; };
+		87CF9C5126CFF6AC00157A6D /* Atoms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87CF9C5026CFF6AC00157A6D /* Atoms.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		87687C4826D5357C00FB82CC /* 0DS.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 0DS.json; sourceTree = "<group>"; };
+		8768BC4226D66BFA00ECA8F9 /* LigandDataStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LigandDataStructures.swift; sourceTree = "<group>"; };
+		8768BC4626D689D000ECA8F9 /* Geometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
+		87771B2626D5AC2F003C4DD4 /* atoms.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = atoms.json; sourceTree = "<group>"; };
+		87771B2826D5D126003C4DD4 /* AtomView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AtomView.xib; sourceTree = "<group>"; };
+		87771B2A26D5D607003C4DD4 /* AtomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomView.swift; sourceTree = "<group>"; };
 		87A4788326CEF6B1009E7AD2 /* SwiftyProtein.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftyProtein.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		87A4788626CEF6B1009E7AD2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		87A4788826CEF6B1009E7AD2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -44,10 +51,9 @@
 		87A478A626CF1BA4009E7AD2 /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
 		87AC6DC826D38E65006EA237 /* 04G.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 04G.json; sourceTree = "<group>"; };
 		87AC6DCA26D3B45A006EA237 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
-		87CF9C4826CFD3A700157A6D /* ABA.mdl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ABA.mdl; sourceTree = "<group>"; };
 		87CF9C4A26CFD3F100157A6D /* ProteinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinViewController.swift; sourceTree = "<group>"; };
 		87CF9C4E26CFEA8B00157A6D /* ABA.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ABA.json; sourceTree = "<group>"; };
-		87CF9C5026CFF6AC00157A6D /* Atom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atom.swift; sourceTree = "<group>"; };
+		87CF9C5026CFF6AC00157A6D /* Atoms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atoms.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +67,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8768BC4426D66C8300ECA8F9 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				87CF9C4E26CFEA8B00157A6D /* ABA.json */,
+				87AC6DC826D38E65006EA237 /* 04G.json */,
+				87771B2626D5AC2F003C4DD4 /* atoms.json */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		8768BC4526D689B300ECA8F9 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				8768BC4626D689D000ECA8F9 /* Geometry.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		87A4787A26CEF6B0009E7AD2 = {
 			isa = PBXGroup;
 			children = (
@@ -80,6 +104,8 @@
 		87A4788526CEF6B1009E7AD2 /* SwiftyProtein */ = {
 			isa = PBXGroup;
 			children = (
+				8768BC4526D689B300ECA8F9 /* Utils */,
+				8768BC4426D66C8300ECA8F9 /* Models */,
 				87A478A326CF0F16009E7AD2 /* Ligands */,
 				87A4788626CEF6B1009E7AD2 /* AppDelegate.swift */,
 				87A4788826CEF6B1009E7AD2 /* SceneDelegate.swift */,
@@ -92,13 +118,12 @@
 				87A4789E26CEF9F9009E7AD2 /* LoginViewController.xib */,
 				87A478A126CF06E6009E7AD2 /* ListTableViewController.swift */,
 				87A478A626CF1BA4009E7AD2 /* ListCell.swift */,
-				87CF9C4826CFD3A700157A6D /* ABA.mdl */,
-				87CF9C4E26CFEA8B00157A6D /* ABA.json */,
-				87AC6DC826D38E65006EA237 /* 04G.json */,
-				87687C4826D5357C00FB82CC /* 0DS.json */,
 				87CF9C4A26CFD3F100157A6D /* ProteinViewController.swift */,
-				87CF9C5026CFF6AC00157A6D /* Atom.swift */,
 				87AC6DCA26D3B45A006EA237 /* Network.swift */,
+				87CF9C5026CFF6AC00157A6D /* Atoms.swift */,
+				87771B2826D5D126003C4DD4 /* AtomView.xib */,
+				87771B2A26D5D607003C4DD4 /* AtomView.swift */,
+				8768BC4226D66BFA00ECA8F9 /* LigandDataStructures.swift */,
 			);
 			path = SwiftyProtein;
 			sourceTree = "<group>";
@@ -168,15 +193,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				87CF9C4926CFD3A700157A6D /* ABA.mdl in Resources */,
 				87CF9C4F26CFEA8B00157A6D /* ABA.json in Resources */,
+				87771B2926D5D126003C4DD4 /* AtomView.xib in Resources */,
 				87A478A026CEF9F9009E7AD2 /* LoginViewController.xib in Resources */,
 				87AC6DC926D38E65006EA237 /* 04G.json in Resources */,
 				87A478A526CF0F57009E7AD2 /* ligands.txt in Resources */,
 				87A4789626CEF6B2009E7AD2 /* LaunchScreen.storyboard in Resources */,
 				87A4789326CEF6B2009E7AD2 /* Assets.xcassets in Resources */,
 				87A4788E26CEF6B1009E7AD2 /* Main.storyboard in Resources */,
-				87687C4926D5357C00FB82CC /* 0DS.json in Resources */,
+				87771B2726D5AC2F003C4DD4 /* atoms.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,14 +212,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8768BC4326D66BFA00ECA8F9 /* LigandDataStructures.swift in Sources */,
+				8768BC4726D689D000ECA8F9 /* Geometry.swift in Sources */,
 				87A4789126CEF6B1009E7AD2 /* SwiftyProtein.xcdatamodeld in Sources */,
+				87771B2B26D5D607003C4DD4 /* AtomView.swift in Sources */,
 				87A4788726CEF6B1009E7AD2 /* AppDelegate.swift in Sources */,
 				87A478A226CF06E6009E7AD2 /* ListTableViewController.swift in Sources */,
 				87A478A726CF1BA4009E7AD2 /* ListCell.swift in Sources */,
 				87CF9C4B26CFD3F100157A6D /* ProteinViewController.swift in Sources */,
 				87AC6DCB26D3B45A006EA237 /* Network.swift in Sources */,
 				87A4789F26CEF9F9009E7AD2 /* LoginViewController.swift in Sources */,
-				87CF9C5126CFF6AC00157A6D /* Atom.swift in Sources */,
+				87CF9C5126CFF6AC00157A6D /* Atoms.swift in Sources */,
 				87A4788926CEF6B1009E7AD2 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

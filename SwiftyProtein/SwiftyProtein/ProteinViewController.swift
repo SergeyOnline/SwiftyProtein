@@ -8,47 +8,6 @@
 import UIKit
 import SceneKit
 
-struct LigandData: Decodable {
-	let baseInfo: ChemComp
-	let atomsInfo: ChemCompAtom
-	let bondInfo: ChemCompBond
-	
-	private enum CodingKeys: String, CodingKey {
-		case baseInfo = "chem_comp"
-		case atomsInfo = "chem_comp_atom"
-		case bondInfo = "chem_comp_bond"
-	}
-}
-
-struct ChemCompBond: Decodable {
-	let atom_id_1: [String]
-	let atom_id_2: [String]
-	let value_order: [String]
-}
-
-struct ChemCompAtom: Decodable {
-	var xCoordinates: [Double]
-	var yCoordinates: [Double]
-	var zCoordinates: [Double]
-	var atomId: [String]
-	var symbol: [String]
-	
-	private enum CodingKeys: String, CodingKey {
-		case xCoordinates = "pdbx_model_Cartn_x_ideal"
-		case yCoordinates = "pdbx_model_Cartn_y_ideal"
-		case zCoordinates = "pdbx_model_Cartn_z_ideal"
-		case atomId = "atom_id"
-		case symbol = "type_symbol"
-	}
-}
-
-struct ChemComp: Decodable {
-	let id: [String]
-	let name: [String]
-	let type: [String]
-	let formula: [String]
-}
-
 class ProteinViewController: UIViewController {
 	
 	var sceneView: SCNView!
@@ -58,10 +17,13 @@ class ProteinViewController: UIViewController {
 	var cameraOrbit: SCNNode!
 	var light: SCNLight!
 	var lightNode: SCNNode!
-	var atomLabel: UILabel!
+	var atomView: AtomView!
+	var highlightedSpshere: SCNGeometry?
+	
 	var pinchGestureRecognizer: UIPinchGestureRecognizer!
 	var panGestureRecognizer: UIPanGestureRecognizer!
 	var tapGestureRecognazer: UITapGestureRecognizer!
+	var atoms: Atoms?
 	
 	var ligandCode: String
 	var ligand: LigandData!
@@ -84,10 +46,21 @@ class ProteinViewController: UIViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
+		self.view.backgroundColor = .white
+		self.navigationController?.navigationBar.tintColor = (self.traitCollection.userInterfaceStyle == .dark) ? .white : .black
 		
-		let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareBarButtonAction))
+		atoms = getAtomsData()
 		
-		self.navigationItem.rightBarButtonItem = shareButton
+		guard atoms != nil else {
+			let alertVC = UIAlertController(title: "Error loading atom structures", message: "", preferredStyle: .alert)
+			let action = UIAlertAction(title: "Ok", style: .cancel) { _ in
+				
+				self.navigationController?.popViewController(animated: false)
+			}
+			alertVC.addAction(action)
+			self.present(alertVC, animated: true, completion: nil)
+			return
+		}
 		
 		pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(zoom))
 		
@@ -95,10 +68,14 @@ class ProteinViewController: UIViewController {
 		
 		tapGestureRecognazer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
 		
-		view.addGestureRecognizer(panGestureRecognizer)
-		view.addGestureRecognizer(pinchGestureRecognizer)
-		view.addGestureRecognizer(tapGestureRecognazer)
-
+		self.view.addGestureRecognizer(panGestureRecognizer)
+		self.view.addGestureRecognizer(pinchGestureRecognizer)
+		self.view.addGestureRecognizer(tapGestureRecognazer)
+		
+		let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareBarButtonAction))
+		
+		self.navigationItem.rightBarButtonItem = shareButton
+		
 		self.view.backgroundColor = .systemBackground
 		activityIndicator = UIActivityIndicatorView(frame: self.view.frame)
 		activityIndicator.style = .large
@@ -107,23 +84,43 @@ class ProteinViewController: UIViewController {
 		activityIndicator.isHidden = false
 		activityIndicator.startAnimating()
 	
-		getDataFor(ligandCode: ligandCode) { ligand in
-			self.ligand = ligand
-			print(self.ligand!)
+		getDataFor(ligandCode: ligandCode) { [self] ligand in
+			
 			DispatchQueue.main.async {
-				self.createScene()
+				
+				if ligand == nil {
+					activityIndicator.stopAnimating()
+					activityIndicator.isHidden = true
+					let alertVC = UIAlertController(title: "Ligand data not found", message: "Data missing or incomplete. Try looking for something else", preferredStyle: .alert)
+					let action = UIAlertAction(title: "Ok", style: .cancel) { _ in
+						
+						self.navigationController?.popViewController(animated: false)
+					}
+					alertVC.addAction(action)
+					self.present(alertVC, animated: true, completion: nil)
+				} else {
+					self.ligand = ligand!
+//					print(self.ligand!)
+					self.createScene()
+					
+				}
 			}
 		}
-		
-        // Do any additional setup after loading the view.
     }
+	
+	//MARK: - Actions
 	
 	@objc func shareBarButtonAction(sender: UIBarButtonItem) {
 		
 		let image = sceneView.snapshot()
-		let shareController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+		
+		let text = "Ligand name: \(ligand.baseInfo.name[0])\nType: \(ligand.baseInfo.type[0])\nFormila: \(ligand.baseInfo.formula[0])"
+		
+		let shareController = UIActivityViewController(activityItems: [image, text], applicationActivities: nil)
 		self.present(shareController, animated: true, completion: nil)
 	}
+	
+	//MARK: - Handle Gesture Recognizer
 	
 	@objc func handlePan(sender: UIPanGestureRecognizer) {
 		let transition = sender.velocity(in: sender.view!)
@@ -134,18 +131,29 @@ class ProteinViewController: UIViewController {
 	@objc func handleTap(sender: UITapGestureRecognizer) {
 		
 		let location = sender.location(in: sceneView)
-		print(location)
 		
 		guard let result = sceneView.hitTest(location, options: nil).first else {
-			atomLabel.isHidden = true
+			removeSphereHilight()
+			atomView.isHidden = true
 			return
 		}
 		guard let geometry = result.node.geometry else { return }
 		if geometry.isKind(of: SCNSphere.self) {
-			atomLabel.text = result.node.name!.capitalized
-			atomLabel.isHidden = false
+			
+			removeSphereHilight()
+			highlightedSpshere = geometry
+			
+			let material = SCNMaterial()
+			material.emission.contents = UIColor.systemGreen
+			
+			highlightedSpshere?.materials.insert(material, at: 0)
+			guard let index = atoms?.symbol.firstIndex(of: result.node.name!.capitalized) else { return }
+			
+			configureAtomView(forIndex: index)
+			atomView.isHidden = false
 		} else {
-			atomLabel.isHidden = true
+			removeSphereHilight()
+			atomView.isHidden = true
 		}
 	}
 	
@@ -160,32 +168,37 @@ class ProteinViewController: UIViewController {
 		}
 	}
 	
+	//MARK: - Configure Scene
 	
-	func createScene() {
-		
+	private func createScene() {
 		self.navigationItem.title = ligand.baseInfo.formula[0]
 		
 		sceneView = SCNView(frame: self.view.frame)
+
+		atomView = AtomView()
+		atomView.isHidden = true
+		atomView.translatesAutoresizingMaskIntoConstraints = false
 		
-		atomLabel = UILabel()
-		atomLabel.backgroundColor = .systemBackground
-		atomLabel.font = UIFont(name: atomLabel.font.fontName, size: 30)
-		atomLabel.textAlignment = .center
-		atomLabel.translatesAutoresizingMaskIntoConstraints = false
+		sceneView.addSubview(atomView)
 		
-		sceneView.addSubview(atomLabel)
-		
-		atomLabel.leftAnchor.constraint(equalTo: sceneView.leftAnchor).isActive = true
-		atomLabel.rightAnchor.constraint(equalTo: sceneView.rightAnchor).isActive = true
-		atomLabel.bottomAnchor.constraint(equalTo: sceneView.bottomAnchor).isActive = true
-		atomLabel.heightAnchor.constraint(equalToConstant: 100).isActive = true
-		
+		atomView.leftAnchor.constraint(equalTo: sceneView.leftAnchor).isActive = true
+		atomView.rightAnchor.constraint(equalTo: sceneView.rightAnchor).isActive = true
+		atomView.bottomAnchor.constraint(equalTo: sceneView.bottomAnchor).isActive = true
+		atomView.heightAnchor.constraint(equalToConstant: 120).isActive = true
 		
 		self.view.addSubview(sceneView)
 		
 		scene = SCNScene()
 		sceneView.scene = scene
 		
+		connectCameraAndLight()
+		connectLigandModel()
+		
+		self.activityIndicator.stopAnimating()
+		self.activityIndicator.isHidden = true
+	}
+	
+	private func connectCameraAndLight() {
 		camera = SCNCamera()
 		cameraNode = SCNNode()
 		cameraNode.camera = camera
@@ -203,29 +216,31 @@ class ProteinViewController: UIViewController {
 		cameraOrbit.addChildNode(lightNode)
 	
 		scene.rootNode.addChildNode(cameraOrbit)
-		
-		let xCoord = ligand.atomsInfo.xCoordinates
-		let yCoord = ligand.atomsInfo.yCoordinates
-		let zCoord = ligand.atomsInfo.zCoordinates
+	}
+	
+	private func connectLigandModel() {
+		let xCoords = ligand.atomsInfo.xCoordinates
+		let yCoords = ligand.atomsInfo.yCoordinates
+		let zCoords = ligand.atomsInfo.zCoordinates
 		
 		for i in 0..<ligand.atomsInfo.xCoordinates.count {
 			
 			let sphereGeometry = SCNSphere(radius: 0.3)
 			let sphereNode = SCNNode(geometry: sphereGeometry)
-			sphereNode.position = SCNVector3(x: Float(xCoord[i]), y: Float(yCoord[i]), z: Float(zCoord[i]))
+			sphereNode.position = SCNVector3(x: Float(xCoords[i]), y: Float(yCoords[i]), z: Float(zCoords[i]))
 			sphereNode.name = ligand.atomsInfo.symbol[i]
 			
 			let material = SCNMaterial()
+			
 			material.diffuse.contents = findCPKColor(symbol: ligand.atomsInfo.symbol[i])
 			sphereGeometry.materials = [material]
+			
+			
 			
 			scene.rootNode.addChildNode(sphereNode)
 		}
 		
 		for (i, atom) in ligand.bondInfo.atom_id_1.enumerated() {
-			
-			print("ATOM: \(atom)")
-			print(ligand.atomsInfo.atomId)
 			
 			let indexFirst = ligand.atomsInfo.atomId.firstIndex(of: atom)!
 			let atom2 = ligand.bondInfo.atom_id_2[i]
@@ -243,97 +258,101 @@ class ProteinViewController: UIViewController {
 			
 			let atomVector2 = SCNVector3(x, y, z)
 			
-			let params = сalculateCylinderParams(atom1: atomVector1, atom2: atomVector2)
-			
-			
-			let cylinderGeometry = SCNCylinder(radius: 0.1, height: CGFloat(params.length))
-			let cylinderNode = SCNNode(geometry: cylinderGeometry)
-			cylinderNode.position = params.position
-			cylinderNode.eulerAngles = params.orientation
-			
-			let material = SCNMaterial()
-			material.diffuse.contents = UIColor.systemGray
-			
-			cylinderGeometry.materials = [material]
+			let cylinderNode = makeCylinder(from: atomVector1, to: atomVector2, radius: 0.1)
 			
 			scene.rootNode.addChildNode(cylinderNode)
-			
+					
 			if ligand.bondInfo.value_order[i] == "DOUB" {
-				let cylinderGeometry2 = SCNCylinder(radius: 0.045, height: CGFloat(params.length))
-				let cylinderNode2 = SCNNode(geometry: cylinderGeometry2)
-				cylinderNode2.position = params.position
-				cylinderNode2.eulerAngles = params.orientation
 				
+				let cylinderNode2 = makeCylinder(from: atomVector1, to: atomVector2, radius: 0.045)
 				
-//				cylinderNode.position.multScalar(scalar: 0.045)
-//				cylinderNode2.position.multScalar(scalar: -0.045)
-				cylinderNode.position.multScalar(scalar: 0.97)
-				cylinderNode2.position.multScalar(scalar: 1.03)
+				scene.rootNode.addChildNode(cylinderNode2)
 				
-//				if cylinderNode.position.x < cylinderNode2.position.x + 0.01 &&
-//					cylinderNode.position.x > cylinderNode2.position.x - 0.01 {
-//					cylinderNode2.position.y += 0.09
-//					cylinderNode.position.y -= 0.09
-//				} else {
-//					cylinderNode2.position.x += 0.09
-//					cylinderNode.position.x -= 0.09
-//				}
+				var direction = atomVector1.cross(vector: atomVector2).normalized() / 10
+		
+				cylinderNode2.position = cylinderNode.position.addition(with: direction)
 				
-				cylinderGeometry.radius = 0.045
-				cylinderGeometry2.materials = [material]
+				direction = atomVector2.cross(vector: atomVector1).normalized() / 10
+				cylinderNode.position =  cylinderNode.position.addition(with: direction)
+				
+				let geometry = cylinderNode.geometry as! SCNCylinder
+				geometry.radius = 0.045
 				
 				scene.rootNode.addChildNode(cylinderNode2)
 			}
-			
-			
 		}
-		
-		self.activityIndicator.stopAnimating()
-		self.activityIndicator.isHidden = true
 	}
 	
-	private func сalculateCylinderParams(atom1: SCNVector3, atom2: SCNVector3) -> (position: SCNVector3, length: Float, orientation: SCNVector3) {
-		let x = (atom1.x + atom2.x) / 2
-		let y = (atom1.y + atom2.y) / 2
-		let z = (atom1.z + atom2.z) / 2
-		let position = SCNVector3(x, y, z)
-		let length = sqrt(pow(atom2.x - atom1.x, 2) + pow(atom2.y - atom1.y, 2) + pow(atom2.z - atom1.z, 2))
+	//MARK: - Private Functions
+	
+	private func makeCylinder(from: SCNVector3, to: SCNVector3, radius: CGFloat) -> SCNNode {
+		let lookAt = to - from
+		let height = lookAt.length()
+		print("look at VECT: \(lookAt)")
+		print("to VECT: \(to)")
+		let y = lookAt.normalized()
+		var up = lookAt.cross(vector: to)
+		if up.x == 0 && up.y == 0.0 && up.z == 0.0 {
+			up.z = 1.0
+		}
+		print("up VECT BEFOR NORMAL: \(up)")
+		up = up.normalized()
+		print("up VECT: \(up)")
 		
-		var orientation = SCNVector3(atom2.x - atom1.x, atom2.y - atom1.y, atom2.z - atom1.z)
+		let x = y.cross(vector: up).normalized()
+		let z = x.cross(vector: y).normalized()
 		
-		let lxz = pow((pow(Double(orientation.x), 2) + pow(Double(orientation.z), 2)), 0.5)
-		var pitch, pitchB: Double
-		if orientation.y < 0 {
-			pitchB = .pi - asin(Double(lxz)/Double(length))
-			} else {
-				pitchB = asin(Double(lxz)/Double(length))
-			}
-			if orientation.z == 0 {
-				pitch = pitchB
-			} else {
-				pitch = sign(Double(orientation.z)) * pitchB
-			}
-			var yaw: Double
-			if orientation.x == 0 && orientation.z == 0 {
-				yaw = 0
-			} else {
-				let inner = Double(orientation.x) / (Double(length) * sin (pitch))
-				if inner > 1 {
-					yaw = .pi / 2
-				} else if inner < -1 {
-					yaw = .pi / 2
-				} else {
-					yaw = asin(inner)
-				}
-			}
-		orientation.x = Float(pitch)
-		orientation.y = Float(yaw)
-		orientation.z = 0
-		return (position, length, orientation)
+		let transform = SCNMatrix4(x: x, y: y, z: z, w: from)
+		
+		let cylinderGeometry = SCNCylinder(radius: radius, height: CGFloat(height))
+		
+		let material = SCNMaterial()
+		material.diffuse.contents = UIColor.systemGray
+		cylinderGeometry.materials = [material]
+		
+		let cylinderNode = SCNNode(geometry: cylinderGeometry)
+		cylinderNode.transform = SCNMatrix4MakeTranslation(0.0, height / 2, 0.0) * transform
+		
+		return cylinderNode
 	}
 	
-	func posBetween(first: SCNVector3, second: SCNVector3) -> SCNVector3 {
-			return SCNVector3Make((first.x + second.x) / 2, (first.y + second.y) / 2, (first.z + second.z) / 2)
+	private func configureAtomView(forIndex index: Int) {
+		
+		atomView.view.backgroundColor = findColorForLiteral(literal: atoms!.series[index])
+		atomView.atomicMassLabel.text = String(atoms!.atomic_mass[index])
+	
+		let count = atoms!.levels[index].count
+		for (number, label) in atomView.levelsLabels.enumerated() {
+			if number < count {
+				label.text = String(atoms!.levels[index][number])
+			} else {
+				label.text = ""
+			}
+		}
+		atomView.nameEnLabel.text = atoms!.name_en[index]
+		atomView.nameRuLabel.text = atoms!.name_ru[index]
+		atomView.ordinalLabel.text = String(atoms!.ordinal[index])
+		atomView.symbolLabel.text = atoms!.symbol[index]
+	}
+	
+	private func removeSphereHilight() {
+		if let currentMaterial = highlightedSpshere?.materials {
+			if currentMaterial.count > 1 {
+				highlightedSpshere?.removeMaterial(at: 0)
+			}
+		}
+	}
+	
+	private func getAtomsData() -> Atoms? {
+		let url = Bundle.main.url(forResource: "atoms", withExtension: "json")!
+		do {
+			let data = try Data(contentsOf: url)
+			let atomData = try JSONDecoder().decode(Atoms.self, from: data)
+			return atomData
+		} catch {
+			print(error)
+			return nil
+		}
 	}
 	
 	private func findCPKColor(symbol: String) -> UIColor {
@@ -376,25 +395,39 @@ class ProteinViewController: UIViewController {
 		}
 		return color
 	}
-}
-
-extension Float {
-	var radians: Float {
-		return self * .pi / 180
-	}
 	
-	var degrees: Float {
-		return self  * 180 / .pi
+	private func findColorForLiteral(literal: String) -> UIColor {
+		var color = UIColor.white
+		switch literal {
+		case "alkaliMetal":
+			color = #colorLiteral(red: 0.9693536162, green: 0.6676997542, blue: 0.7528296113, alpha: 1)
+		case "alkalineEarth":
+			color = #colorLiteral(red: 0.998482883, green: 0.8616068959, blue: 0.6625244617, alpha: 1)
+		case "transitionMetal":
+			color = #colorLiteral(red: 0.9968060851, green: 0.9880352616, blue: 0.8624708056, alpha: 1)
+		case "basicMetal":
+			color = #colorLiteral(red: 0.8298531771, green: 0.9206516147, blue: 0.8480390906, alpha: 1)
+		case "semimetal":
+			color = #colorLiteral(red: 0.5784708858, green: 0.8501104712, blue: 0.9601013064, alpha: 1)
+		case "nonmetal":
+			color = #colorLiteral(red: 0.751444459, green: 0.8440964818, blue: 0.9399982095, alpha: 1)
+		case "halogen":
+			color = #colorLiteral(red: 0.8799833059, green: 0.878002584, blue: 0.9396790862, alpha: 1)
+		case "nobleGas":
+			color = #colorLiteral(red: 0.880866468, green: 0.8111004829, blue: 0.8989744782, alpha: 1)
+		case "lanthanide":
+			color = #colorLiteral(red: 0.9050008655, green: 0.8538355827, blue: 0.8319188952, alpha: 1)
+		case "actinide":
+			color = #colorLiteral(red: 0.9570552707, green: 0.8624190688, blue: 0.8301641345, alpha: 1)
+		default:
+			break
+		}
+		return color
 	}
 }
 
-extension SCNVector3 {
-	mutating func multScalar(scalar: Float) {
-//		self.x += scalar
-//		self.y += scalar
-//		self.z += scalar
-		self.x *= scalar
-		self.y *= scalar
-		self.z *= scalar
-	}
-}
+/*
+Atomic number
+Atomic weight
+Electron Shell Configuration
+*/
