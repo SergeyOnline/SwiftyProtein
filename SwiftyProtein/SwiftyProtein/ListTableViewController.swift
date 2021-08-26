@@ -15,7 +15,6 @@ class ListTableViewController: UITableViewController, UISearchBarDelegate {
 	private let cellId = "cellId"
 	var searchBar: UISearchBar!
 	
-	
     override func viewDidLoad() {
         super.viewDidLoad()
 		readLigandsFromCoreData()
@@ -57,6 +56,7 @@ class ListTableViewController: UITableViewController, UISearchBarDelegate {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
+		
 		cell.textLabel?.text = sortedLigands[indexPath.row]
         return cell
     }
@@ -69,6 +69,7 @@ class ListTableViewController: UITableViewController, UISearchBarDelegate {
 	}
 
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		
 		let proteinVC = ProteinViewController(ligandCode: (tableView.cellForRow(at: indexPath)?.textLabel?.text)!)
 		self.navigationController?.pushViewController(proteinVC, animated: true)
 	}

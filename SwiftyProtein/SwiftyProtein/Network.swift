@@ -39,7 +39,7 @@ func getDataFor(ligandCode code: String, complition: @escaping (LigandData?) -> 
 	
 			let decoder = JSONDecoder()
 			let ligandData = try decoder.decode(LigandData.self, from: newData)
-			print(ligandData)
+//			print(ligandData)
 			complition(ligandData)
 		} catch {
 			let error = error

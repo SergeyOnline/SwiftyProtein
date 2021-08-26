@@ -102,7 +102,6 @@ class ProteinViewController: UIViewController {
 					self.ligand = ligand!
 //					print(self.ligand!)
 					self.createScene()
-					
 				}
 			}
 		}
@@ -235,34 +234,37 @@ class ProteinViewController: UIViewController {
 			material.diffuse.contents = findCPKColor(symbol: ligand.atomsInfo.symbol[i])
 			sphereGeometry.materials = [material]
 			
-			
-			
+		
 			scene.rootNode.addChildNode(sphereNode)
 		}
 		
-		for (i, atom) in ligand.bondInfo.atom_id_1.enumerated() {
+		guard let _ = ligand.bondInfo else { return }
+		
+		for (i, atom) in ligand.bondInfo!.atom_id_1.enumerated() {
 			
 			let indexFirst = ligand.atomsInfo.atomId.firstIndex(of: atom)!
-			let atom2 = ligand.bondInfo.atom_id_2[i]
+			let atom2 = ligand.bondInfo!.atom_id_2[i]
 			let indexSecond = ligand.atomsInfo.atomId.firstIndex(of: atom2)!
 			
 			var x = ligand.atomsInfo.xCoordinates[indexFirst]
 			var y = ligand.atomsInfo.yCoordinates[indexFirst]
 			var z = ligand.atomsInfo.zCoordinates[indexFirst]
 			
-			let atomVector1 = SCNVector3(x, y, z)
-			
+			var atomVector1 = SCNVector3(x, y, z)
+			correctСoordinates(coordinate: &atomVector1)
+
 			x = ligand.atomsInfo.xCoordinates[indexSecond]
 			y = ligand.atomsInfo.yCoordinates[indexSecond]
 			z = ligand.atomsInfo.zCoordinates[indexSecond]
 			
-			let atomVector2 = SCNVector3(x, y, z)
+			var atomVector2 = SCNVector3(x, y, z)
+			correctСoordinates(coordinate: &atomVector2)
 			
 			let cylinderNode = makeCylinder(from: atomVector1, to: atomVector2, radius: 0.1)
 			
 			scene.rootNode.addChildNode(cylinderNode)
 					
-			if ligand.bondInfo.value_order[i] == "DOUB" {
+			if ligand.bondInfo!.value_order[i] == "DOUB" {
 				
 				let cylinderNode2 = makeCylinder(from: atomVector1, to: atomVector2, radius: 0.045)
 				
@@ -285,19 +287,27 @@ class ProteinViewController: UIViewController {
 	
 	//MARK: - Private Functions
 	
+	private func correctСoordinates(coordinate: inout SCNVector3) {
+		if coordinate.x == 0.0 {
+			coordinate.x = 0.0001
+		}
+		if coordinate.y == 0.0 {
+			coordinate.y = 0.0001
+		}
+		if coordinate.z == 0.0 {
+			coordinate.z = 0.0001
+		}
+	}
+	
 	private func makeCylinder(from: SCNVector3, to: SCNVector3, radius: CGFloat) -> SCNNode {
 		let lookAt = to - from
 		let height = lookAt.length()
-		print("look at VECT: \(lookAt)")
-		print("to VECT: \(to)")
 		let y = lookAt.normalized()
 		var up = lookAt.cross(vector: to)
-		if up.x == 0 && up.y == 0.0 && up.z == 0.0 {
-			up.z = 1.0
-		}
-		print("up VECT BEFOR NORMAL: \(up)")
+//		if up.x == 0 && up.y == 0.0 && up.z == 0.0 {
+//			up.z = 1.0
+//		}
 		up = up.normalized()
-		print("up VECT: \(up)")
 		
 		let x = y.cross(vector: up).normalized()
 		let z = x.cross(vector: y).normalized()

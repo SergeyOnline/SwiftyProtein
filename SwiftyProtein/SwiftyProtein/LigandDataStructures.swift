@@ -8,7 +8,7 @@
 struct LigandData: Decodable {
 	let baseInfo: ChemComp
 	let atomsInfo: ChemCompAtom
-	let bondInfo: ChemCompBond
+	let bondInfo: ChemCompBond?
 	
 	private enum CodingKeys: String, CodingKey {
 		case baseInfo = "chem_comp"
@@ -45,3 +45,5 @@ struct ChemComp: Decodable {
 	let type: [String]
 	let formula: [String]
 }
+
+
