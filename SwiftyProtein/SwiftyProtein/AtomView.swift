@@ -16,8 +16,12 @@ class AtomView: UIView {
 	@IBOutlet weak var nameRuLabel: UILabel!
 	@IBOutlet weak var ordinalLabel: UILabel!
 	@IBOutlet weak var atomicMassLabel: UILabel!
+	@IBOutlet weak var electronShellConfigLabel: UILabel!
+	@IBOutlet weak var atomicNumberLabel: UILabel!
+	@IBOutlet weak var atomicWeightLabel: UILabel!
 	
 	@IBOutlet var levelsLabels: [UILabel]!
+	
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)

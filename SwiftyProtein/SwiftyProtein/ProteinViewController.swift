@@ -91,13 +91,7 @@ class ProteinViewController: UIViewController {
 				if ligand == nil {
 					activityIndicator.stopAnimating()
 					activityIndicator.isHidden = true
-					let alertVC = UIAlertController(title: "Ligand data not found", message: "Data missing or incomplete. Try looking for something else", preferredStyle: .alert)
-					let action = UIAlertAction(title: "Ok", style: .cancel) { _ in
-						
-						self.navigationController?.popViewController(animated: false)
-					}
-					alertVC.addAction(action)
-					self.present(alertVC, animated: true, completion: nil)
+					showAllert()
 				} else {
 					self.ligand = ligand!
 //					print(self.ligand!)
@@ -159,11 +153,13 @@ class ProteinViewController: UIViewController {
 	@objc func zoom(sender: UIPinchGestureRecognizer) {
 		
 		guard let camera = cameraOrbit.childNode(withName: "Camera", recursively: false) else { return }
+		guard let light = cameraOrbit.childNode(withName: "Light", recursively: false) else { return }
 		let scale = sender.velocity
 		
 		let z = camera.position.z - Float(scale) / Float(pinchModifier)
 		if z < maxZoomOut, z > maxZoomIn {
 			camera.position.z = z
+			light.position.z = z
 		}
 	}
 	
@@ -212,15 +208,43 @@ class ProteinViewController: UIViewController {
 		lightNode = SCNNode()
 		lightNode.light = light
 		lightNode.position = SCNVector3(0, 0, 25.0)
+		lightNode.name = "Light"
 		cameraOrbit.addChildNode(lightNode)
 	
 		scene.rootNode.addChildNode(cameraOrbit)
 	}
 	
 	private func connectLigandModel() {
-		let xCoords = ligand.atomsInfo.xCoordinates
-		let yCoords = ligand.atomsInfo.yCoordinates
-		let zCoords = ligand.atomsInfo.zCoordinates
+		
+		var xCoords: [Double]
+		var yCoords: [Double]
+		var zCoords: [Double]
+		
+		if ligand.atomsInfo.xCoordinates.contains(nil) ||
+			ligand.atomsInfo.yCoordinates.contains(nil) ||
+			ligand.atomsInfo.zCoordinates.contains(nil) {
+		
+			if ligand.atomsInfo.xAltCoord.contains(nil) ||
+				ligand.atomsInfo.yAltCoord.contains(nil) ||
+				ligand.atomsInfo.zAltCoord.contains(nil) {
+				showAllert()
+				return
+				
+			} else {
+				
+				xCoords = ligand.atomsInfo.xAltCoord.map { $0!}
+				yCoords = ligand.atomsInfo.yAltCoord.map { $0!}
+				zCoords = ligand.atomsInfo.zAltCoord.map { $0!}
+				
+				let index = xCoords.count / 2
+				cameraOrbit.position = SCNVector3Make(Float(xCoords[index]), Float(yCoords[index]), Float(zCoords[index]))
+			}
+		
+		} else {
+			xCoords = ligand.atomsInfo.xCoordinates.map { $0! }
+			yCoords = ligand.atomsInfo.yCoordinates.map { $0! }
+			zCoords = ligand.atomsInfo.zCoordinates.map { $0! }
+		}
 		
 		for i in 0..<ligand.atomsInfo.xCoordinates.count {
 			
@@ -246,16 +270,16 @@ class ProteinViewController: UIViewController {
 			let atom2 = ligand.bondInfo!.atom_id_2[i]
 			let indexSecond = ligand.atomsInfo.atomId.firstIndex(of: atom2)!
 			
-			var x = ligand.atomsInfo.xCoordinates[indexFirst]
-			var y = ligand.atomsInfo.yCoordinates[indexFirst]
-			var z = ligand.atomsInfo.zCoordinates[indexFirst]
+			var x = xCoords[indexFirst]
+			var y = yCoords[indexFirst]
+			var z = zCoords[indexFirst]
 			
 			var atomVector1 = SCNVector3(x, y, z)
 			correctСoordinates(coordinate: &atomVector1)
 
-			x = ligand.atomsInfo.xCoordinates[indexSecond]
-			y = ligand.atomsInfo.yCoordinates[indexSecond]
-			z = ligand.atomsInfo.zCoordinates[indexSecond]
+			x = xCoords[indexSecond]
+			y = yCoords[indexSecond]
+			z = zCoords[indexSecond]
 			
 			var atomVector2 = SCNVector3(x, y, z)
 			correctСoordinates(coordinate: &atomVector2)
@@ -329,20 +353,39 @@ class ProteinViewController: UIViewController {
 	private func configureAtomView(forIndex index: Int) {
 		
 		atomView.view.backgroundColor = findColorForLiteral(literal: atoms!.series[index])
-		atomView.atomicMassLabel.text = String(atoms!.atomic_mass[index])
-	
-		let count = atoms!.levels[index].count
-		for (number, label) in atomView.levelsLabels.enumerated() {
-			if number < count {
-				label.text = String(atoms!.levels[index][number])
-			} else {
-				label.text = ""
+		
+		if atoms!.ordinal[index] == -1 {
+			
+			atomView.atomicMassLabel.isHidden = true
+			for label in atomView.levelsLabels {
+				label.isHidden = true
 			}
+			atomView.nameEnLabel.text = atoms!.name_en[index]
+			atomView.nameRuLabel.text = atoms!.name_ru[index]
+			atomView.ordinalLabel.isHidden = true
+			atomView.symbolLabel.text = atoms!.symbol[index]
+			atomView.atomicWeightLabel.isHidden = true
+			atomView.atomicNumberLabel.isHidden = true
+			atomView.electronShellConfigLabel.isHidden = true
+		} else {
+			
+			atomView.atomicMassLabel.text = String(atoms!.atomic_mass[index])
+			
+			let count = atoms!.levels[index].count
+			for (number, label) in atomView.levelsLabels.enumerated() {
+				if number < count {
+					label.text = String(atoms!.levels[index][number])
+				} else {
+					label.text = ""
+				}
+			}
+			atomView.nameEnLabel.text = atoms!.name_en[index]
+			atomView.nameRuLabel.text = atoms!.name_ru[index]
+			atomView.ordinalLabel.text = String(atoms!.ordinal[index])
+			atomView.symbolLabel.text = atoms!.symbol[index]
 		}
-		atomView.nameEnLabel.text = atoms!.name_en[index]
-		atomView.nameRuLabel.text = atoms!.name_ru[index]
-		atomView.ordinalLabel.text = String(atoms!.ordinal[index])
-		atomView.symbolLabel.text = atoms!.symbol[index]
+		
+		
 	}
 	
 	private func removeSphereHilight() {
@@ -433,6 +476,16 @@ class ProteinViewController: UIViewController {
 			break
 		}
 		return color
+	}
+	
+	private func showAllert() {
+		let alertVC = UIAlertController(title: "Ligand data not found", message: "Data missing or incomplete. Try looking for something else", preferredStyle: .alert)
+		let action = UIAlertAction(title: "Ok", style: .cancel) { _ in
+			
+			self.navigationController?.popViewController(animated: false)
+		}
+		alertVC.addAction(action)
+		self.present(alertVC, animated: true, completion: nil)
 	}
 }
 

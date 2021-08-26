@@ -24,9 +24,12 @@ struct ChemCompBond: Decodable {
 }
 
 struct ChemCompAtom: Decodable {
-	var xCoordinates: [Double]
-	var yCoordinates: [Double]
-	var zCoordinates: [Double]
+	var xCoordinates: [Double?]
+	var yCoordinates: [Double?]
+	var zCoordinates: [Double?]
+	var xAltCoord: [Double?]
+	var yAltCoord: [Double?]
+	var zAltCoord:[Double?]
 	var atomId: [String]
 	var symbol: [String]
 	
@@ -34,6 +37,9 @@ struct ChemCompAtom: Decodable {
 		case xCoordinates = "pdbx_model_Cartn_x_ideal"
 		case yCoordinates = "pdbx_model_Cartn_y_ideal"
 		case zCoordinates = "pdbx_model_Cartn_z_ideal"
+		case xAltCoord = "model_Cartn_x"
+		case yAltCoord = "model_Cartn_y"
+		case zAltCoord = "model_Cartn_z"
 		case atomId = "atom_id"
 		case symbol = "type_symbol"
 	}

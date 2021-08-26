@@ -31,7 +31,7 @@ func getDataFor(ligandCode code: String, complition: @escaping (LigandData?) -> 
 		string = string.replacingOccurrences(of: "\"data_\(code)\":", with: "\n")
 		string.removeFirst()
 		string.removeLast()
-//		print(string)
+		print(string)
 		
 		let newData = string.data(using: .utf8)!
 		

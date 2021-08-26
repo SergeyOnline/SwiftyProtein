@@ -13,6 +13,7 @@
 		87771B2926D5D126003C4DD4 /* AtomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87771B2826D5D126003C4DD4 /* AtomView.xib */; };
 		87771B2B26D5D607003C4DD4 /* AtomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87771B2A26D5D607003C4DD4 /* AtomView.swift */; };
 		8777B91F26D6E2A000496C84 /* F.json in Resources */ = {isa = PBXBuildFile; fileRef = 8777B91E26D6E2A000496C84 /* F.json */; };
+		8777B92126D7152800496C84 /* 2HP.json in Resources */ = {isa = PBXBuildFile; fileRef = 8777B92026D7152800496C84 /* 2HP.json */; };
 		87A4788726CEF6B1009E7AD2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A4788626CEF6B1009E7AD2 /* AppDelegate.swift */; };
 		87A4788926CEF6B1009E7AD2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A4788826CEF6B1009E7AD2 /* SceneDelegate.swift */; };
 		87A4788E26CEF6B1009E7AD2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 87A4788C26CEF6B1009E7AD2 /* Main.storyboard */; };
@@ -38,6 +39,7 @@
 		87771B2826D5D126003C4DD4 /* AtomView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AtomView.xib; sourceTree = "<group>"; };
 		87771B2A26D5D607003C4DD4 /* AtomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomView.swift; sourceTree = "<group>"; };
 		8777B91E26D6E2A000496C84 /* F.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = F.json; sourceTree = "<group>"; };
+		8777B92026D7152800496C84 /* 2HP.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 2HP.json; sourceTree = "<group>"; };
 		87A4788326CEF6B1009E7AD2 /* SwiftyProtein.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftyProtein.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		87A4788626CEF6B1009E7AD2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		87A4788826CEF6B1009E7AD2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 		8768BC4426D66C8300ECA8F9 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				8777B92026D7152800496C84 /* 2HP.json */,
 				8777B91E26D6E2A000496C84 /* F.json */,
 				87CF9C4E26CFEA8B00157A6D /* ABA.json */,
 				87AC6DC826D38E65006EA237 /* 04G.json */,
@@ -199,6 +202,7 @@
 				8777B91F26D6E2A000496C84 /* F.json in Resources */,
 				87CF9C4F26CFEA8B00157A6D /* ABA.json in Resources */,
 				87771B2926D5D126003C4DD4 /* AtomView.xib in Resources */,
+				8777B92126D7152800496C84 /* 2HP.json in Resources */,
 				87A478A026CEF9F9009E7AD2 /* LoginViewController.xib in Resources */,
 				87AC6DC926D38E65006EA237 /* 04G.json in Resources */,
 				87A478A526CF0F57009E7AD2 /* ligands.txt in Resources */,
