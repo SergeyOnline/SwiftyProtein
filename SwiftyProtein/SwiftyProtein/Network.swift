@@ -13,7 +13,14 @@ func getDataFor(ligandCode code: String, complition: @escaping (LigandData?) -> 
 	
 	guard let url = URL(string: "\(Host)\(code).json") else { return }
 	let request = URLRequest(url: url)
-	let session = URLSession.shared
+	
+	let sessionConfig = URLSessionConfiguration.default
+	sessionConfig.timeoutIntervalForRequest = 10
+	sessionConfig.timeoutIntervalForResource = 100
+	
+	let session = URLSession(configuration: sessionConfig)
+	
+//	let session = URLSession.shared
 	
 	session.dataTask(with: request) { data, response, error in
 		if let response: HTTPURLResponse = response as? HTTPURLResponse {
@@ -23,15 +30,15 @@ func getDataFor(ligandCode code: String, complition: @escaping (LigandData?) -> 
 			}
 		}
 		
-		guard let data = data else { return }
-		guard error == nil else { return }
+		guard let data = data else { complition(nil); return }
+		guard error == nil else { complition(nil); return }
 	
 		
 		var string = String(data: data, encoding: .utf8)!
 		string = string.replacingOccurrences(of: "\"data_\(code)\":", with: "\n")
 		string.removeFirst()
 		string.removeLast()
-		print(string)
+//		print(string)
 		
 		let newData = string.data(using: .utf8)!
 		

@@ -8,12 +8,13 @@
 import UIKit
 import CoreData
 
-class ListTableViewController: UITableViewController, UISearchBarDelegate {
+class ListTableViewController: UITableViewController, UISearchBarDelegate, UIGestureRecognizerDelegate {
 
 	var ligands: [String] = []
 	var sortedLigands: [String] = []
 	private let cellId = "cellId"
 	var searchBar: UISearchBar!
+	var tapGestureRecognazer: UITapGestureRecognizer!
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +23,8 @@ class ListTableViewController: UITableViewController, UISearchBarDelegate {
 		self.navigationItem.title = "Ligands"
 		
 		tableView.register(ListCell.self, forCellReuseIdentifier: cellId)
+		tableView.separatorColor = .black
+		tableView.separatorInset = UIEdgeInsets.zero
 		
 		searchBar = UISearchBar()
 		searchBar.placeholder = "search"
@@ -33,21 +36,34 @@ class ListTableViewController: UITableViewController, UISearchBarDelegate {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
 //		tableView.reloadData()
+		
+		tapGestureRecognazer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+		tapGestureRecognazer.delegate = self
+		
+		self.view.addGestureRecognizer(tapGestureRecognazer)
+		
     }
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(true)
+		searchBar.reloadInputViews()
+	}
+	
+	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+		let location = touch.location(in: tableView)
+		return (tableView.indexPathForRow(at: location) == nil)
+	}
+	
+	@objc func handleTap(sender: UITapGestureRecognizer) {
+		if searchBar.isFirstResponder == true {
+			searchBar.resignFirstResponder()
+		}
+	}
 
     // MARK: - Table view data source
 
-	/*
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
-	*/
-	
-	//https://pdbj.org/rest/newweb/fetch/file?cat=cc&format=mdl&id=ABA
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return sortedLigands.count
+		return (sortedLigands.count < 12) ? 12 : sortedLigands.count
     }
 	
 	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -55,11 +71,68 @@ class ListTableViewController: UITableViewController, UISearchBarDelegate {
 	}
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! ListCell
 		
-		cell.textLabel?.text = sortedLigands[indexPath.row]
+		cell.textLabel?.text = (indexPath.row < sortedLigands.count) ? sortedLigands[indexPath.row] : ""
+		cell.textLabel?.textColor = .black
+		cell.clipsToBounds = true
+		
+		
+//		let path = Bundle.main.path(forResource: "1", ofType: "png")!
+		cell.backgroundImage.image = findBackgroundImageForCellWith(indexPath: indexPath)
         return cell
     }
+	
+	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+		return 56
+	}
+	
+	
+	private func findBackgroundImageForCellWith(indexPath: IndexPath) -> UIImage {
+		var image: UIImage
+		
+		let index = indexPath.row % 16
+		
+		let bundle = Bundle.main
+		
+		if index == 0 {
+			image = UIImage(contentsOfFile: bundle.path(forResource: "0", ofType: "png")!)!
+		} else if index % 15 == 0 {
+			image = UIImage(contentsOfFile: bundle.path(forResource: "15", ofType: "png")!)!
+		} else if index % 14 == 0 {
+			image = UIImage(contentsOfFile: bundle.path(forResource: "14", ofType: "png")!)!
+		} else if index % 13 == 0 {
+			image = UIImage(contentsOfFile: bundle.path(forResource: "13", ofType: "png")!)!
+		} else if index % 12 == 0 {
+			image = UIImage(contentsOfFile: bundle.path(forResource: "12", ofType: "png")!)!
+		} else if index % 11 == 0 {
+			image = UIImage(contentsOfFile: bundle.path(forResource: "11", ofType: "png")!)!
+		} else if index % 10 == 0 {
+			image = UIImage(contentsOfFile: bundle.path(forResource: "10", ofType: "png")!)!
+		} else if index % 9 == 0 {
+			image = UIImage(contentsOfFile: bundle.path(forResource: "9", ofType: "png")!)!
+		} else if index % 8 == 0 {
+			image = UIImage(contentsOfFile: bundle.path(forResource: "8", ofType: "png")!)!
+		} else if index % 7 == 0 {
+			image = UIImage(contentsOfFile: bundle.path(forResource: "7", ofType: "png")!)!
+		} else if index % 6 == 0 {
+			image = UIImage(contentsOfFile: bundle.path(forResource: "6", ofType: "png")!)!
+		} else if index % 5 == 0 {
+			image = UIImage(contentsOfFile: bundle.path(forResource: "5", ofType: "png")!)!
+		} else if index % 4 == 0 {
+			image = UIImage(contentsOfFile: bundle.path(forResource: "4", ofType: "png")!)!
+		} else if index % 3 == 0 {
+			image = UIImage(contentsOfFile: bundle.path(forResource: "3", ofType: "png")!)!
+		} else if index % 2 == 0 {
+			image = UIImage(contentsOfFile: bundle.path(forResource: "2", ofType: "png")!)!
+		} else if index % 1 == 0 {
+			image = UIImage(contentsOfFile: bundle.path(forResource: "1", ofType: "png")!)!
+		} else {
+			image = UIImage(contentsOfFile: bundle.path(forResource: "0", ofType: "png")!)!
+		}
+		
+		return image
+	}
 	
 	override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 		if section == 0 {
@@ -68,10 +141,37 @@ class ListTableViewController: UITableViewController, UISearchBarDelegate {
 		return nil
 	}
 
+	
+	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+		searchBar.resignFirstResponder()
+	}
+	
+	override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+		if searchBar.isFirstResponder == true {
+			searchBar.resignFirstResponder()
+		}
+//		super.scrollViewDidScroll(scrollView)
+	}
+	
+	
+//	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//		if let _ = touches.first {
+//			searchBar.endEditing(true)
+//		}
+//		super.touchesBegan(touches, with: event)
+//	}
+	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		
-		let proteinVC = ProteinViewController(ligandCode: (tableView.cellForRow(at: indexPath)?.textLabel?.text)!)
-		self.navigationController?.pushViewController(proteinVC, animated: true)
+		if indexPath.row < sortedLigands.count {
+			let proteinVC = ProteinViewController(ligandCode: (tableView.cellForRow(at: indexPath)?.textLabel?.text)!)
+			self.navigationController?.pushViewController(proteinVC, animated: true)
+			self.tableView.deselectRow(at: indexPath, animated: true)
+			if searchBar.isFirstResponder == true {
+				searchBar.resignFirstResponder()
+			}
+		}
+		tableView.deselectRow(at: indexPath, animated: true)
 	}
 	
     /*

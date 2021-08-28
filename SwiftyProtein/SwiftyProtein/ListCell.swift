@@ -9,7 +9,9 @@ import UIKit
 
 class ListCell: UITableViewCell {
 
-    override func awakeFromNib() {
+	@IBOutlet weak var backgroundImage: UIImageView!
+	
+	override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
@@ -20,4 +22,27 @@ class ListCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
+	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+		super.init(style: style, reuseIdentifier: reuseIdentifier)
+		xibSetup()
+		
+	}
+	
+	
+	func xibSetup() {
+		backgroundView = loadViewFromNib()
+	}
+	
+	func loadViewFromNib() -> UIView {
+		let bundle = Bundle(for: type(of: self))
+		let nib = UINib(nibName: "ListCell", bundle: bundle)
+		let view = nib.instantiate(withOwner: self, options: nil)[0] as! UIView
+		
+		return view
+	}
+	
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+	
 }

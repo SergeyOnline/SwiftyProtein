@@ -244,6 +244,15 @@ class ProteinViewController: UIViewController {
 			xCoords = ligand.atomsInfo.xCoordinates.map { $0! }
 			yCoords = ligand.atomsInfo.yCoordinates.map { $0! }
 			zCoords = ligand.atomsInfo.zCoordinates.map { $0! }
+			
+			let xLimit = xCoords.first { $0 > 15.0 || $0 < -15.0 }
+			let yLimit = yCoords.first { $0 > 15.0 || $0 < -15.0 }
+			let zLimit = zCoords.first { $0 > 20.0 || $0 < -25.0 }
+			if xLimit != nil || yLimit != nil || zLimit != nil {
+				let index = xCoords.count / 2
+				cameraOrbit.position = SCNVector3Make(Float(xCoords[index]), Float(yCoords[index]), Float(zCoords[index]))
+			}
+			
 		}
 		
 		for i in 0..<ligand.atomsInfo.xCoordinates.count {
@@ -479,7 +488,7 @@ class ProteinViewController: UIViewController {
 	}
 	
 	private func showAllert() {
-		let alertVC = UIAlertController(title: "Ligand data not found", message: "Data missing or incomplete. Try looking for something else", preferredStyle: .alert)
+		let alertVC = UIAlertController(title: "Ligand data not found", message: "Data missing or incomplete. Try looking for something else\n(сheck your network connection)", preferredStyle: .alert)
 		let action = UIAlertAction(title: "Ok", style: .cancel) { _ in
 			
 			self.navigationController?.popViewController(animated: false)
@@ -488,9 +497,3 @@ class ProteinViewController: UIViewController {
 		self.present(alertVC, animated: true, completion: nil)
 	}
 }
-
-/*
-Atomic number
-Atomic weight
-Electron Shell Configuration
-*/
