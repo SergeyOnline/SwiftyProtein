@@ -173,37 +173,41 @@ class ListTableViewController: UITableViewController, UISearchBarDelegate, UIGes
 		
 		if index == 0 {
 			image = UIImage(contentsOfFile: bundle.path(forResource: "0", ofType: "png")!)!
-		} else if index % 15 == 0 {
+			return image
+		}
+		
+		switch index {
+		case 15:
 			image = UIImage(contentsOfFile: bundle.path(forResource: "15", ofType: "png")!)!
-		} else if index % 14 == 0 {
+		case 14:
 			image = UIImage(contentsOfFile: bundle.path(forResource: "14", ofType: "png")!)!
-		} else if index % 13 == 0 {
+		case 13:
 			image = UIImage(contentsOfFile: bundle.path(forResource: "13", ofType: "png")!)!
-		} else if index % 12 == 0 {
+		case 12:
 			image = UIImage(contentsOfFile: bundle.path(forResource: "12", ofType: "png")!)!
-		} else if index % 11 == 0 {
+		case 11:
 			image = UIImage(contentsOfFile: bundle.path(forResource: "11", ofType: "png")!)!
-		} else if index % 10 == 0 {
+		case 10:
 			image = UIImage(contentsOfFile: bundle.path(forResource: "10", ofType: "png")!)!
-		} else if index % 9 == 0 {
+		case 9:
 			image = UIImage(contentsOfFile: bundle.path(forResource: "9", ofType: "png")!)!
-		} else if index % 8 == 0 {
+		case 8:
 			image = UIImage(contentsOfFile: bundle.path(forResource: "8", ofType: "png")!)!
-		} else if index % 7 == 0 {
+		case 7:
 			image = UIImage(contentsOfFile: bundle.path(forResource: "7", ofType: "png")!)!
-		} else if index % 6 == 0 {
+		case 6:
 			image = UIImage(contentsOfFile: bundle.path(forResource: "6", ofType: "png")!)!
-		} else if index % 5 == 0 {
+		case 5:
 			image = UIImage(contentsOfFile: bundle.path(forResource: "5", ofType: "png")!)!
-		} else if index % 4 == 0 {
+		case 4:
 			image = UIImage(contentsOfFile: bundle.path(forResource: "4", ofType: "png")!)!
-		} else if index % 3 == 0 {
+		case 3:
 			image = UIImage(contentsOfFile: bundle.path(forResource: "3", ofType: "png")!)!
-		} else if index % 2 == 0 {
+		case 2:
 			image = UIImage(contentsOfFile: bundle.path(forResource: "2", ofType: "png")!)!
-		} else if index % 1 == 0 {
+		case 1:
 			image = UIImage(contentsOfFile: bundle.path(forResource: "1", ofType: "png")!)!
-		} else {
+		default:
 			image = UIImage(contentsOfFile: bundle.path(forResource: "0", ofType: "png")!)!
 		}
 		
