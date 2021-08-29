@@ -27,6 +27,7 @@
 		8767353226DA7A7100DCC15E /* 0.png in Resources */ = {isa = PBXBuildFile; fileRef = 8767351026DA7A7100DCC15E /* 0.png */; };
 		8768BC4326D66BFA00ECA8F9 /* LigandDataStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8768BC4226D66BFA00ECA8F9 /* LigandDataStructures.swift */; };
 		8768BC4726D689D000ECA8F9 /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8768BC4626D689D000ECA8F9 /* Geometry.swift */; };
+		876C564E26DBB24000FB52B9 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 876C564D26DBB24000FB52B9 /* Icon.png */; };
 		87771B2726D5AC2F003C4DD4 /* atoms.json in Resources */ = {isa = PBXBuildFile; fileRef = 87771B2626D5AC2F003C4DD4 /* atoms.json */; };
 		87771B2926D5D126003C4DD4 /* AtomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87771B2826D5D126003C4DD4 /* AtomView.xib */; };
 		87771B2B26D5D607003C4DD4 /* AtomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87771B2A26D5D607003C4DD4 /* AtomView.swift */; };
@@ -71,6 +72,7 @@
 		8767351026DA7A7100DCC15E /* 0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 0.png; sourceTree = "<group>"; };
 		8768BC4226D66BFA00ECA8F9 /* LigandDataStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LigandDataStructures.swift; sourceTree = "<group>"; };
 		8768BC4626D689D000ECA8F9 /* Geometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
+		876C564D26DBB24000FB52B9 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		87771B2626D5AC2F003C4DD4 /* atoms.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = atoms.json; sourceTree = "<group>"; };
 		87771B2826D5D126003C4DD4 /* AtomView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AtomView.xib; sourceTree = "<group>"; };
 		87771B2A26D5D607003C4DD4 /* AtomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomView.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				8767350C26DA7A7100DCC15E /* FullAtom.png */,
 				8767350D26DA7A7100DCC15E /* 1.png */,
 				8767351026DA7A7100DCC15E /* 0.png */,
+				876C564D26DBB24000FB52B9 /* Icon.png */,
 			);
 			path = BackgroundImages;
 			sourceTree = "<group>";
@@ -273,6 +276,7 @@
 				8767352D26DA7A7100DCC15E /* 3.png in Resources */,
 				8777B92126D7152800496C84 /* 2HP.json in Resources */,
 				87A478A026CEF9F9009E7AD2 /* LoginViewController.xib in Resources */,
+				876C564E26DBB24000FB52B9 /* Icon.png in Resources */,
 				87AC6DC926D38E65006EA237 /* 04G.json in Resources */,
 				8767352F26DA7A7100DCC15E /* 1.png in Resources */,
 				87A478A526CF0F57009E7AD2 /* ligands.txt in Resources */,

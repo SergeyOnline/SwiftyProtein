@@ -166,7 +166,7 @@ class ProteinViewController: UIViewController {
 	//MARK: - Configure Scene
 	
 	private func createScene() {
-		self.navigationItem.title = ligand.baseInfo.formula[0]
+		self.navigationItem.title = ligandCode
 		
 		sceneView = SCNView(frame: self.view.frame)
 
@@ -412,7 +412,7 @@ class ProteinViewController: UIViewController {
 			let atomData = try JSONDecoder().decode(Atoms.self, from: data)
 			return atomData
 		} catch {
-			print(error)
+			print("\(error), \(error.localizedDescription)")
 			return nil
 		}
 	}

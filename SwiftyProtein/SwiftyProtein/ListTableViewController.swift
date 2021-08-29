@@ -30,11 +30,6 @@ class ListTableViewController: UITableViewController, UISearchBarDelegate, UIGes
 		searchBar.placeholder = "search"
 		searchBar.delegate = self
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
 //		tableView.reloadData()
 		
 		tapGestureRecognazer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
@@ -48,6 +43,8 @@ class ListTableViewController: UITableViewController, UISearchBarDelegate, UIGes
 		super.viewWillAppear(true)
 		searchBar.reloadInputViews()
 	}
+	
+	//MARK: - Handle Gesture Recognizer
 	
 	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
 		let location = touch.location(in: tableView)
@@ -63,8 +60,9 @@ class ListTableViewController: UITableViewController, UISearchBarDelegate, UIGes
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return (sortedLigands.count < 12) ? 12 : sortedLigands.count
+		return (sortedLigands.count < 13) ? 13 : sortedLigands.count
     }
+	
 	
 	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 		return 40
@@ -74,11 +72,9 @@ class ListTableViewController: UITableViewController, UISearchBarDelegate, UIGes
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! ListCell
 		
 		cell.textLabel?.text = (indexPath.row < sortedLigands.count) ? sortedLigands[indexPath.row] : ""
+		cell.selectionStyle = (indexPath.row < sortedLigands.count) ? .default : .none
 		cell.textLabel?.textColor = .black
 		cell.clipsToBounds = true
-		
-		
-//		let path = Bundle.main.path(forResource: "1", ofType: "png")!
 		cell.backgroundImage.image = findBackgroundImageForCellWith(indexPath: indexPath)
         return cell
     }
@@ -87,6 +83,86 @@ class ListTableViewController: UITableViewController, UISearchBarDelegate, UIGes
 		return 56
 	}
 	
+	override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+		if section == 0 {
+			return searchBar
+		}
+		return nil
+	}
+	
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		
+		if indexPath.row < sortedLigands.count {
+			let proteinVC = ProteinViewController(ligandCode: (tableView.cellForRow(at: indexPath)?.textLabel?.text)!)
+			self.navigationController?.pushViewController(proteinVC, animated: true)
+			self.tableView.deselectRow(at: indexPath, animated: true)
+		}
+		if searchBar.isFirstResponder == true {
+			searchBar.resignFirstResponder()
+		}
+	}
+	
+	// MARK: - SearchBarDelegate
+	
+	func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+	
+		if searchText.isEmpty {
+			sortedLigands = ligands
+			tableView.reloadData()
+			return
+		}
+		
+		var text = searchText
+		text.removeAll { character in
+			return character == " "
+		}
+		
+		sortedLigands = ligands.filter({ str in
+			str.hasPrefix(text.uppercased())
+		})
+		
+		if sortedLigands.isEmpty {
+			let alertVC = UIAlertController(title: "", message: "Ligand not found", preferredStyle: .alert)
+			let action = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+			alertVC.addAction(action)
+			self.present(alertVC, animated: true, completion: nil)
+			searchBar.text = ""
+			sortedLigands = ligands
+		} else {
+			sortedLigands.sort()
+		}
+		
+		tableView.reloadData()
+	}
+	
+	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+		searchBar.resignFirstResponder()
+	}
+	
+	//MARK: Scroll View Methods
+	
+	override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+		if searchBar.isFirstResponder == true {
+			searchBar.resignFirstResponder()
+		}
+//		super.scrollViewDidScroll(scrollView)
+	}
+	
+	//MARK: - Private Functions
+	
+	private func readLigandsFromCoreData() {
+		guard let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer else { fatalError("This view needs a persistent container.") }
+		let context = container.viewContext
+		let request: NSFetchRequest<Ligand> = Ligand.fetchRequest()
+		do {
+			let array = try context.fetch(request)
+			ligands = array.map({ $0.name!})
+			sortedLigands = ligands
+		} catch {
+			let error = error as NSError
+			fatalError("Unresolved error \(error), \(error.userInfo)")
+		}
+	}
 	
 	private func findBackgroundImageForCellWith(indexPath: IndexPath) -> UIImage {
 		var image: UIImage
@@ -132,138 +208,6 @@ class ListTableViewController: UITableViewController, UISearchBarDelegate, UIGes
 		}
 		
 		return image
-	}
-	
-	override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-		if section == 0 {
-			return searchBar
-		}
-		return nil
-	}
-
-	
-	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-		searchBar.resignFirstResponder()
-	}
-	
-	override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-		if searchBar.isFirstResponder == true {
-			searchBar.resignFirstResponder()
-		}
-//		super.scrollViewDidScroll(scrollView)
-	}
-	
-	
-//	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//		if let _ = touches.first {
-//			searchBar.endEditing(true)
-//		}
-//		super.touchesBegan(touches, with: event)
-//	}
-	
-	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		
-		if indexPath.row < sortedLigands.count {
-			let proteinVC = ProteinViewController(ligandCode: (tableView.cellForRow(at: indexPath)?.textLabel?.text)!)
-			self.navigationController?.pushViewController(proteinVC, animated: true)
-			self.tableView.deselectRow(at: indexPath, animated: true)
-			if searchBar.isFirstResponder == true {
-				searchBar.resignFirstResponder()
-			}
-		}
-		tableView.deselectRow(at: indexPath, animated: true)
-	}
-	
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-	
-	// MARK: - SearchBarDelegate
-	
-	func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-	
-		if searchText.isEmpty {
-			sortedLigands = ligands
-			tableView.reloadData()
-			return
-		}
-		
-		var text = searchText
-		text.removeAll { character in
-			return character == " "
-		}
-		
-		sortedLigands = ligands.filter({ str in
-			str.hasPrefix(text.uppercased())
-		})
-		
-		if sortedLigands.isEmpty {
-			let alertVC = UIAlertController(title: "", message: "Ligand not found", preferredStyle: .alert)
-			let action = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
-			alertVC.addAction(action)
-			self.present(alertVC, animated: true, completion: nil)
-			searchBar.text = ""
-			sortedLigands = ligands
-		} else {
-			sortedLigands.sort()
-		}
-		
-		tableView.reloadData()
-	}
-	
-	func readLigandsFromCoreData() {
-		guard let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer else { fatalError("This view needs a persistent container.") }
-		let context = container.viewContext
-		let request: NSFetchRequest<Ligand> = Ligand.fetchRequest()
-		do {
-			let array = try context.fetch(request)
-			ligands = array.map({ $0.name!})
-			sortedLigands = ligands
-		} catch {
-			let error = error as NSError
-			fatalError("Unresolved error \(error), \(error.userInfo)")
-		}
 	}
 
 }
