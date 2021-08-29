@@ -31,8 +31,6 @@
 		87771B2726D5AC2F003C4DD4 /* atoms.json in Resources */ = {isa = PBXBuildFile; fileRef = 87771B2626D5AC2F003C4DD4 /* atoms.json */; };
 		87771B2926D5D126003C4DD4 /* AtomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87771B2826D5D126003C4DD4 /* AtomView.xib */; };
 		87771B2B26D5D607003C4DD4 /* AtomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87771B2A26D5D607003C4DD4 /* AtomView.swift */; };
-		8777B91F26D6E2A000496C84 /* F.json in Resources */ = {isa = PBXBuildFile; fileRef = 8777B91E26D6E2A000496C84 /* F.json */; };
-		8777B92126D7152800496C84 /* 2HP.json in Resources */ = {isa = PBXBuildFile; fileRef = 8777B92026D7152800496C84 /* 2HP.json */; };
 		87A4788726CEF6B1009E7AD2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A4788626CEF6B1009E7AD2 /* AppDelegate.swift */; };
 		87A4788926CEF6B1009E7AD2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A4788826CEF6B1009E7AD2 /* SceneDelegate.swift */; };
 		87A4788E26CEF6B1009E7AD2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 87A4788C26CEF6B1009E7AD2 /* Main.storyboard */; };
@@ -44,10 +42,8 @@
 		87A478A226CF06E6009E7AD2 /* ListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A478A126CF06E6009E7AD2 /* ListTableViewController.swift */; };
 		87A478A526CF0F57009E7AD2 /* ligands.txt in Resources */ = {isa = PBXBuildFile; fileRef = 87A478A426CF0F57009E7AD2 /* ligands.txt */; };
 		87A478A726CF1BA4009E7AD2 /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A478A626CF1BA4009E7AD2 /* ListCell.swift */; };
-		87AC6DC926D38E65006EA237 /* 04G.json in Resources */ = {isa = PBXBuildFile; fileRef = 87AC6DC826D38E65006EA237 /* 04G.json */; };
 		87AC6DCB26D3B45A006EA237 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87AC6DCA26D3B45A006EA237 /* Network.swift */; };
 		87CF9C4B26CFD3F100157A6D /* ProteinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87CF9C4A26CFD3F100157A6D /* ProteinViewController.swift */; };
-		87CF9C4F26CFEA8B00157A6D /* ABA.json in Resources */ = {isa = PBXBuildFile; fileRef = 87CF9C4E26CFEA8B00157A6D /* ABA.json */; };
 		87CF9C5126CFF6AC00157A6D /* Atoms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87CF9C5026CFF6AC00157A6D /* Atoms.swift */; };
 /* End PBXBuildFile section */
 
@@ -76,8 +72,6 @@
 		87771B2626D5AC2F003C4DD4 /* atoms.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = atoms.json; sourceTree = "<group>"; };
 		87771B2826D5D126003C4DD4 /* AtomView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AtomView.xib; sourceTree = "<group>"; };
 		87771B2A26D5D607003C4DD4 /* AtomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomView.swift; sourceTree = "<group>"; };
-		8777B91E26D6E2A000496C84 /* F.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = F.json; sourceTree = "<group>"; };
-		8777B92026D7152800496C84 /* 2HP.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 2HP.json; sourceTree = "<group>"; };
 		87A4788326CEF6B1009E7AD2 /* SwiftyProtein.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftyProtein.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		87A4788626CEF6B1009E7AD2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		87A4788826CEF6B1009E7AD2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -91,10 +85,8 @@
 		87A478A126CF06E6009E7AD2 /* ListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewController.swift; sourceTree = "<group>"; };
 		87A478A426CF0F57009E7AD2 /* ligands.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ligands.txt; sourceTree = "<group>"; };
 		87A478A626CF1BA4009E7AD2 /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
-		87AC6DC826D38E65006EA237 /* 04G.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 04G.json; sourceTree = "<group>"; };
 		87AC6DCA26D3B45A006EA237 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		87CF9C4A26CFD3F100157A6D /* ProteinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinViewController.swift; sourceTree = "<group>"; };
-		87CF9C4E26CFEA8B00157A6D /* ABA.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ABA.json; sourceTree = "<group>"; };
 		87CF9C5026CFF6AC00157A6D /* Atoms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atoms.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -137,10 +129,6 @@
 		8768BC4426D66C8300ECA8F9 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				8777B92026D7152800496C84 /* 2HP.json */,
-				8777B91E26D6E2A000496C84 /* F.json */,
-				87CF9C4E26CFEA8B00157A6D /* ABA.json */,
-				87AC6DC826D38E65006EA237 /* 04G.json */,
 				87771B2626D5AC2F003C4DD4 /* atoms.json */,
 			);
 			path = Models;
@@ -267,17 +255,13 @@
 				8767352B26DA7A7100DCC15E /* 2.png in Resources */,
 				8767352526DA7A7100DCC15E /* 4.png in Resources */,
 				8767351926DA7A7100DCC15E /* 15.png in Resources */,
-				8777B91F26D6E2A000496C84 /* F.json in Resources */,
 				8767352626DA7A7100DCC15E /* 5.png in Resources */,
-				87CF9C4F26CFEA8B00157A6D /* ABA.json in Resources */,
 				87771B2926D5D126003C4DD4 /* AtomView.xib in Resources */,
 				8767352A26DA7A7100DCC15E /* 6.png in Resources */,
 				8767351626DA7A7100DCC15E /* 9.png in Resources */,
 				8767352D26DA7A7100DCC15E /* 3.png in Resources */,
-				8777B92126D7152800496C84 /* 2HP.json in Resources */,
 				87A478A026CEF9F9009E7AD2 /* LoginViewController.xib in Resources */,
 				876C564E26DBB24000FB52B9 /* Icon.png in Resources */,
-				87AC6DC926D38E65006EA237 /* 04G.json in Resources */,
 				8767352F26DA7A7100DCC15E /* 1.png in Resources */,
 				87A478A526CF0F57009E7AD2 /* ligands.txt in Resources */,
 				8767351526DA7A7100DCC15E /* 8.png in Resources */,
