@@ -171,11 +171,6 @@ class ListTableViewController: UITableViewController, UISearchBarDelegate, UIGes
 		
 		let bundle = Bundle.main
 		
-		if index == 0 {
-			image = UIImage(contentsOfFile: bundle.path(forResource: "0", ofType: "png")!)!
-			return image
-		}
-		
 		switch index {
 		case 15:
 			image = UIImage(contentsOfFile: bundle.path(forResource: "15", ofType: "png")!)!
