@@ -52,7 +52,7 @@ class ProteinViewController: UIViewController {
 		atoms = getAtomsData()
 		
 		guard atoms != nil else {
-			let alertVC = UIAlertController(title: "Error loading atom structures", message: "", preferredStyle: .alert)
+			let alertVC = UIAlertController(title: NSLocalizedString("errorLoadingAtomStructures", comment: ""), message: "", preferredStyle: .alert)
 			let action = UIAlertAction(title: "Ok", style: .cancel) { _ in
 				
 				self.navigationController?.popViewController(animated: false)
@@ -369,8 +369,8 @@ class ProteinViewController: UIViewController {
 			for label in atomView.levelsLabels {
 				label.isHidden = true
 			}
-			atomView.nameEnLabel.text = atoms!.name_en[index]
-			atomView.nameRuLabel.text = atoms!.name_ru[index]
+			atomView.nameLaLabel.text = atoms!.name_la[index]
+			atomView.nameLanguageLabel.text = atoms!.valueForPropertyName(name: NSLocalizedString("name", comment: ""))[index]
 			atomView.ordinalLabel.isHidden = true
 			atomView.symbolLabel.text = atoms!.symbol[index]
 			atomView.atomicWeightLabel.isHidden = true
@@ -388,10 +388,13 @@ class ProteinViewController: UIViewController {
 					label.text = ""
 				}
 			}
-			atomView.nameEnLabel.text = atoms!.name_en[index]
-			atomView.nameRuLabel.text = atoms!.name_ru[index]
+			atomView.nameLaLabel.text = atoms!.name_la[index]
+			atomView.nameLanguageLabel.text = atoms!.valueForPropertyName(name: NSLocalizedString("name", comment: ""))[index]
 			atomView.ordinalLabel.text = String(atoms!.ordinal[index])
 			atomView.symbolLabel.text = atoms!.symbol[index]
+			atomView.atomicWeightLabel.text = NSLocalizedString("weight", comment: "")
+			atomView.atomicNumberLabel.text = NSLocalizedString("number", comment: "")
+			atomView.electronShellConfigLabel.text  = NSLocalizedString("shell", comment: "")
 		}
 		
 		
@@ -488,8 +491,8 @@ class ProteinViewController: UIViewController {
 	}
 	
 	private func showAllert() {
-		let alertVC = UIAlertController(title: "Ligand data not found", message: "Data missing or incomplete. Try looking for something else\n(сheck your network connection)", preferredStyle: .alert)
-		let action = UIAlertAction(title: "Ok", style: .cancel) { _ in
+		let alertVC = UIAlertController(title: NSLocalizedString("errorTitleLigandDataNotFound", comment: ""), message: NSLocalizedString("errorMessageLigandDataNotFound", comment: ""), preferredStyle: .alert)
+		let action = UIAlertAction(title: "OK", style: .cancel) { _ in
 			
 			self.navigationController?.popViewController(animated: false)
 		}

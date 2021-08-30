@@ -12,8 +12,8 @@
                 <outlet property="atomicNumberLabel" destination="cH6-dt-ssQ" id="uEy-CO-QBX"/>
                 <outlet property="atomicWeightLabel" destination="cvA-eA-hJZ" id="VJ2-hb-IP8"/>
                 <outlet property="electronShellConfigLabel" destination="DBX-23-Mme" id="vfi-wq-xpo"/>
-                <outlet property="nameEnLabel" destination="01i-P1-hMe" id="Xye-52-oAT"/>
-                <outlet property="nameRuLabel" destination="xrR-Hi-j5W" id="mMM-Vy-8Tc"/>
+                <outlet property="nameLaLabel" destination="01i-P1-hMe" id="Xye-52-oAT"/>
+                <outlet property="nameLanguageLabel" destination="xrR-Hi-j5W" id="mMM-Vy-8Tc"/>
                 <outlet property="ordinalLabel" destination="qOk-1h-qwa" id="VQl-M1-7nb"/>
                 <outlet property="symbolLabel" destination="HjA-f2-iTx" id="tdz-Fr-57g"/>
                 <outletCollection property="levelsLabels" destination="sXZ-Vi-BYc" collectionClass="NSMutableArray" id="KiI-6S-XEY"/>

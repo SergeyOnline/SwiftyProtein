@@ -20,14 +20,14 @@ class ListTableViewController: UITableViewController, UISearchBarDelegate, UIGes
         super.viewDidLoad()
 		readLigandsFromCoreData()
 		
-		self.navigationItem.title = "Ligands"
+		self.navigationItem.title = NSLocalizedString("ligands", comment: "")
 		
 		tableView.register(ListCell.self, forCellReuseIdentifier: cellId)
 		tableView.separatorColor = .black
 		tableView.separatorInset = UIEdgeInsets.zero
 		
 		searchBar = UISearchBar()
-		searchBar.placeholder = "search"
+		searchBar.placeholder = NSLocalizedString("search", comment: "")
 		searchBar.delegate = self
 
 //		tableView.reloadData()
@@ -122,8 +122,8 @@ class ListTableViewController: UITableViewController, UISearchBarDelegate, UIGes
 		})
 		
 		if sortedLigands.isEmpty {
-			let alertVC = UIAlertController(title: "", message: "Ligand not found", preferredStyle: .alert)
-			let action = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+			let alertVC = UIAlertController(title: "", message: NSLocalizedString("errorNotFoundLigand", comment: ""), preferredStyle: .alert)
+			let action = UIAlertAction(title: "OK", style: .cancel, handler: nil)
 			alertVC.addAction(action)
 			self.present(alertVC, animated: true, completion: nil)
 			searchBar.text = ""

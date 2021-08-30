@@ -1,0 +1,22 @@
+/* 
+  Localizable.strings
+  SwiftyProtein
+
+  Created by Сергей on 30.08.2021.
+  
+*/
+
+
+// ListTableViewController
+"ligands" = "Лиганды";
+"search" = "поиск";
+"errorNotFoundLigand" = "Лиганд не найден";
+
+// ProteinViewController
+"name" = "name_ru";
+"weight" = "Атомарная масса";
+"number" = "Порядковый номер";
+"shell" = "Распределение электронов";
+"errorLoadingAtomStructures" = "Неудалось загрузить информацию о структуре атома";
+"errorTitleLigandDataNotFound" = "Данные лиганда не найдены";
+"errorMessageLigandDataNotFound" = "Данные отсутствуют или неполны. Попробуйте поискать что-нибудь еще\n(проверьте подключение к сети)";

@@ -12,8 +12,8 @@ class AtomView: UIView {
 	var view: UIView!
 
 	@IBOutlet weak var symbolLabel: UILabel!
-	@IBOutlet weak var nameEnLabel: UILabel!
-	@IBOutlet weak var nameRuLabel: UILabel!
+	@IBOutlet weak var nameLaLabel: UILabel!
+	@IBOutlet weak var nameLanguageLabel: UILabel!
 	@IBOutlet weak var ordinalLabel: UILabel!
 	@IBOutlet weak var atomicMassLabel: UILabel!
 	@IBOutlet weak var electronShellConfigLabel: UILabel!
