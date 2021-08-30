@@ -1,0 +1,11 @@
+/* 
+  InfoPlist.strings
+  SwiftyProtein
+
+  Created by Сергей on 30.08.2021.
+  
+*/
+
+NSContactsUsageDescription = "Please allow access to \"Contacts\" to be able to share ligand models";
+NSFaceIDUsageDescription = "Please authorize the use of Face ID for data protection";
+NSPhotoLibraryAddUsageDescription = "Please allow access to the \"Photo\" to be able to save ligand models";

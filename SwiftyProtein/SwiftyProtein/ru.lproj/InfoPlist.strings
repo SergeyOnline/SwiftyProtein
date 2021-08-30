@@ -1,0 +1,11 @@
+/* 
+  InfoPlist.strings
+  SwiftyProtein
+
+  Created by Сергей on 30.08.2021.
+  
+*/
+
+NSContactsUsageDescription = "Пожалуйста разрешите доступ к \"Контакты\" для возможности делиться моделями лиганд";
+NSFaceIDUsageDescription = "Пожалуйста разрешите использование Face ID для защиты данных";
+NSPhotoLibraryAddUsageDescription = "Пожалуйста разрешите доступ к \"Фото\" для возможности сохранения моделей лиганд";
