@@ -6,6 +6,11 @@
   
 */
 
+// LoginViewController
+"accessTitle" = "Доступ к Face ID запрещен";
+"accessMessage" = "Пожалуйста разрешите доступ в настройках приложения";
+"settingsButton" = "Настройки";
+"cancelButton" = "Отмена";
 
 // ListTableViewController
 "ligands" = "Лиганды";
@@ -20,3 +25,5 @@
 "errorLoadingAtomStructures" = "Неудалось загрузить информацию о структуре атома";
 "errorTitleLigandDataNotFound" = "Данные лиганда не найдены";
 "errorMessageLigandDataNotFound" = "Данные отсутствуют или неполны. Попробуйте поискать что-нибудь еще\n(проверьте подключение к сети)";
+"accessPhotoTitle" = "Доступ к \"Фото\" запрещен";
+"accessPhotoMessage" = "Пожалуйста разрешите доступ в настройках приложения";

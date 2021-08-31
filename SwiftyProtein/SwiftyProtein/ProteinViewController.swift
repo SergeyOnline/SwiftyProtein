@@ -7,6 +7,7 @@
 
 import UIKit
 import SceneKit
+import Photos
 
 class ProteinViewController: UIViewController {
 	
@@ -105,12 +106,40 @@ class ProteinViewController: UIViewController {
 	
 	@objc func shareBarButtonAction(sender: UIBarButtonItem) {
 		
-		let image = sceneView.snapshot()
+		let photos = PHPhotoLibrary.authorizationStatus()
 		
-		let text = "Ligand name: \(ligand.baseInfo.name[0])\nType: \(ligand.baseInfo.type[0])\nFormila: \(ligand.baseInfo.formula[0])"
-		
-		let shareController = UIActivityViewController(activityItems: [image, text], applicationActivities: nil)
-		self.present(shareController, animated: true, completion: nil)
+		if photos == .notDetermined {
+			PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
+				switch status {
+				case .authorized:
+					
+					DispatchQueue.main.async {
+						let image = self.sceneView.snapshot()
+						
+						let text = "Ligand name: \(self.ligand.baseInfo.name[0])\nType: \(self.ligand.baseInfo.type[0])\nFormila: \(self.ligand.baseInfo.formula[0])"
+						
+						let shareController = UIActivityViewController(activityItems: [image, text], applicationActivities: nil)
+						self.present(shareController, animated: true, completion: nil)
+					}
+				case .denied:
+					
+					DispatchQueue.main.async {
+						let alertController = UIAlertController(title: NSLocalizedString("accessPhotoTitle", comment: ""), message: NSLocalizedString("accessPhotoMessage", comment: ""), preferredStyle: .alert)
+						let okAction = UIAlertAction(title: NSLocalizedString("settingsButton", comment: ""), style: .default) { _ in
+							UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
+						}
+						let cancelAction = UIAlertAction(title: NSLocalizedString("cancelButton", comment: ""), style: .cancel, handler: nil)
+						alertController.addAction(okAction)
+						alertController.addAction(cancelAction)
+						self.present(alertController, animated: true, completion: nil)
+					}
+				case .limited: print("limited")
+				case .notDetermined: print("notDetermined")
+				case .restricted: print("restricted")
+				default: print("UNKNOWN")
+				}
+			}
+		}
 	}
 	
 	//MARK: - Handle Gesture Recognizer

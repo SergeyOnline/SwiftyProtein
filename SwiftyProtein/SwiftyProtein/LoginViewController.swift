@@ -21,7 +21,7 @@ class LoginViewController: UIViewController {
 		let context = LAContext()
 		
 		if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
-			context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Please authenticate to proceed.") { success, error in
+			context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Please authorize the use of Face ID for data protection") { success, error in
 				if success {
 					DispatchQueue.main.async {
 						//TODO: do something
@@ -32,6 +32,15 @@ class LoginViewController: UIViewController {
 					print(error.localizedDescription)
 				}
 			}
+		} else {
+			let alertController = UIAlertController(title: NSLocalizedString("accessTitle", comment: ""), message: NSLocalizedString("accessMessage", comment: ""), preferredStyle: .alert)
+			let okAction = UIAlertAction(title: NSLocalizedString("settingsButton", comment: ""), style: .default) { _ in
+				UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
+			}
+			let cancelAction = UIAlertAction(title: NSLocalizedString("cancelButton", comment: ""), style: .cancel, handler: nil)
+			alertController.addAction(okAction)
+			alertController.addAction(cancelAction)
+			self.present(alertController, animated: true, completion: nil)
 		}
 	}
 }

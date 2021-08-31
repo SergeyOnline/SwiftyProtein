@@ -6,6 +6,11 @@
   
 */
 
+// LoginViewController
+"accessTitle" = "Access to the Face ID is denied";
+"accessMessage" = "Please allow access in the application settings";
+"settingsButton" = "Settings";
+"cancelButton" = "Cancel";
 
 // ListTableViewController
 "ligands" = "Ligands";
@@ -20,3 +25,5 @@
 "errorLoadingAtomStructures" = "Failed to load information about the structure of the atom";
 "errorTitleLigandDataNotFound" = "Ligand data not found";
 "errorMessageLigandDataNotFound" = "Data missing or incomplete. Try looking for something else\n(сheck your network connection)";
+"accessPhotoTitle" = "Access to the \"Photo\" is denied";
+"accessPhotoMessage" = "Please allow access in the application settings";
